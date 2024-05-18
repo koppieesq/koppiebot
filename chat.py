@@ -7,26 +7,34 @@ from questions import answer_question
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, MessageHandler, filters
 import daemon
+import discord
+from discord.ext import commands
 
-# Define variables
-tg_bot_token = os.environ['TG_BOT_TOKEN']
+# Load the blog knowledge
 df = pd.read_csv('embeddings.csv', index_col=0)
 df['embeddings'] = df['embeddings'].apply(eval).apply(np.array)
 
-# Main function: relay questions to answer_question()
-async def koppiebot(update: Update, context: ContextTypes.DEFAULT_TYPE):
-  print(f"Received message: {update.message}")
-  answer = answer_question(df, question=update.message.text, debug=True)
-  await context.bot.send_message(chat_id=update.effective_chat.id, text=answer)
+# Define a client for the Discord bot
+class KoppieBot(discord.Client):
+    async def on_ready(self):
+        print('Logged on as', self.user)
 
-def chat():
-  application = ApplicationBuilder().token(tg_bot_token).build()
-  
-  koppiebot_handler = MessageHandler(filters.TEXT & (~filters.COMMAND), koppiebot)
-  application.add_handler(koppiebot_handler)
+    async def on_message(self, message):
+        # don't respond to ourselves
+        if message.author == self.user:
+            return
 
-  application.run_polling()
+        if message.content == 'ping':
+            await message.channel.send('pong')
+        
+        answer = answer_question(df, question=message.content, debug=True)
+        await message.channel.send(answer)
 
 if __name__ == '__main__':
   with daemon.DaemonContext():
-    chat()
+    # Define Discord bot
+    intents = discord.Intents.default()
+    intents.message_content = True
+    client = KoppieBot(intents=intents)
+    discord_bot_token = os.environ['DISCORD_BOT_TOKEN']
+    client.run(discord_bot_token)
