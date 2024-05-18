@@ -6,6 +6,7 @@ import numpy as np
 from questions import answer_question
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, MessageHandler, filters
+import daemon
 
 # Define variables
 tg_bot_token = os.environ['TG_BOT_TOKEN']
@@ -18,17 +19,14 @@ async def koppiebot(update: Update, context: ContextTypes.DEFAULT_TYPE):
   answer = answer_question(df, question=update.message.text, debug=True)
   await context.bot.send_message(chat_id=update.effective_chat.id, text=answer)
 
-def lambda_handler(event, context):
+def chat():
   application = ApplicationBuilder().token(tg_bot_token).build()
   
-  # Define a job queue to keep the chatbot running
-  job_queue = application.job_queue
-  job_queue.run_repeating(koppiebot, interval=60, first=0)
-
   koppiebot_handler = MessageHandler(filters.TEXT & (~filters.COMMAND), koppiebot)
   application.add_handler(koppiebot_handler)
 
   application.run_polling()
 
 if __name__ == '__main__':
-  lambda_handler(None, None)
+  with daemon.DaemonContext():
+    chat()
