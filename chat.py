@@ -4,6 +4,7 @@ import numpy as np
 from questions import answer_question
 import daemon
 import discord
+from discord.ext import commands
 
 # Load the blog knowledge
 df = pd.read_csv('embeddings.csv', index_col=0)
@@ -26,10 +27,26 @@ class KoppieBot(discord.Client):
         await message.channel.send(answer)
 
 if __name__ == '__main__':
+  print('Got this far')
   with daemon.DaemonContext():
+    print('Initializing daemon...')
     # Define Discord bot
     intents = discord.Intents.default()
     intents.message_content = True
-    client = KoppieBot(intents=intents)
+    # client = KoppieBot(intents=intents)
+
     discord_bot_token = os.environ['DISCORD_BOT_TOKEN']
-    client.run(discord_bot_token)
+    # client.run(discord_bot_token)
+
+    bot = commands.Bot(command_prefix='/', intents=intents)
+
+    @bot.command()
+    async def ping(ctx):
+        await ctx.send('pong')
+    
+    @bot.command()
+    async def ask(ctx, question):
+        answer = answer_question(df, question=question, debug=True)
+        await ctx.send(answer)
+
+    bot.run(discord_bot_token)
