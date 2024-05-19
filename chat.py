@@ -1,14 +1,9 @@
 import os
-import json
-from openai import OpenAI
 import pandas as pd
 import numpy as np
 from questions import answer_question
-from telegram import Update
-from telegram.ext import ApplicationBuilder, ContextTypes, MessageHandler, filters
 import daemon
 import discord
-from discord.ext import commands
 
 # Load the blog knowledge
 df = pd.read_csv('embeddings.csv', index_col=0)
