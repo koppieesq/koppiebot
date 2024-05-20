@@ -11,9 +11,6 @@ load_dotenv()
 
 openai = OpenAI(api_key=os.environ['OPENAI_API_KEY'])
 
-df = pd.read_csv('embeddings.csv', index_col=0)
-df['embeddings'] = df['embeddings'].apply(eval).apply(np.array)
-
 def distances_from_embeddings(
   query_embedding: List[float],
   embeddings: List[List[float]],
