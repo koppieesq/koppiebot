@@ -96,6 +96,12 @@ def answer_question(df,
         presence_penalty=0,
         stop=stop_sequence,
     )
+
+    if debug:
+      print("Raw response:")
+      print(response)
+      print("\n\n")
+      
     return response.choices[0].message.content
   except Exception as e:
     print(e)
