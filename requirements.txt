@@ -6,3 +6,4 @@ python-telegram-bot[job-queue]
 pydantic-core
 python-daemon
 discord
+python-dotenv

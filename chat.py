@@ -3,10 +3,14 @@
 import os
 import pandas as pd
 import numpy as np
+from dotenv import load_dotenv
 from questions import answer_question
 import daemon
 import discord
 from discord.ext import commands
+
+# Load environment variables from a .env file, if it exists (not in git)
+load_dotenv()
 
 # Load the blog knowledge
 df = pd.read_csv('embeddings.csv', index_col=0)

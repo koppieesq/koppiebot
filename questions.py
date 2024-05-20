@@ -4,6 +4,10 @@ import pandas as pd
 from openai import OpenAI
 from typing import List
 from scipy import spatial
+from dotenv import load_dotenv
+
+# Load environment variables from a .env file, if it exists (not in git)
+load_dotenv()
 
 openai = OpenAI(api_key=os.environ['OPENAI_API_KEY'])
 
