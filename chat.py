@@ -12,8 +12,8 @@ from discord.ext import commands
 # Load environment variables from a .env file, if it exists (not in git)
 load_dotenv()
 
-# Get the current path
-current_path = os.getcwd()
+# Get the current path as an environment variable
+current_path = os.environ['CURRENT_PATH']
 
 # Load the blog knowledge
 df = pd.read_csv(f"{current_path}/embeddings.csv", index_col=0)
