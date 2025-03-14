@@ -6,3 +6,5 @@ langchain-openai
 langchain-core
 dotenv
 bs4
+beautifulsoup4
+IPython
