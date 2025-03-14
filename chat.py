@@ -126,12 +126,7 @@ def generate(state: MessagesState):
     return {"messages": [response]}
 
 
-
-
 # Compile application and test
-# graph_builder = StateGraph(State).add_sequence([retrieve, generate])
-# graph_builder.add_edge(START, "retrieve")
-# graph = graph_builder.compile()
 graph_builder = StateGraph(MessagesState)
 
 graph_builder.add_node(query_or_respond)
@@ -153,8 +148,6 @@ config = {"configurable": {"thread_id": "koppiebot"}}
 
 display(Image(graph.get_graph().draw_mermaid_png()))
 
-# response = graph.invoke({"question": "Who is Jordan Koplowicz?"})
-# print(response["answer"])
 input_message = "Who is Jordan Koplowicz?"
 
 for step in graph.stream(
