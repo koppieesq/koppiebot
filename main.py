@@ -7,10 +7,13 @@ from fastapi.responses import PlainTextResponse
 
 app = FastAPI()
 
-
+# frontend URLs
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://kands10.ddev.site:3000"],  # frontend URL
+    allow_origins=[
+        "https://kands10.ddev.site:3000",
+        "https://koppiebot.koplowiczandsons.com:8000"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

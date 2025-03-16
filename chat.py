@@ -23,5 +23,5 @@ df['embeddings'] = df['embeddings'].apply(eval).apply(np.array)
 def answer(query):
     # Strip command from question before passing it to AI
     question = query.replace('/ask ', '')
-    answer = answer_question(df, question=question, debug=False)
+    answer = answer_question(df, question=question, debug=False, max_len=5000)
     return answer
