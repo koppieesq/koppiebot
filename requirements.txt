@@ -8,3 +8,5 @@ dotenv
 bs4
 beautifulsoup4
 IPython
+fastapi[standard]
+typing
