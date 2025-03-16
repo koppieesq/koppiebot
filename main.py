@@ -12,7 +12,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://kands10.ddev.site:3000",
-        "https://koppiebot.koplowiczandsons.com"
+        "https://koplowiczandsons.com"
     ],
     allow_credentials=True,
     allow_methods=["*"],
