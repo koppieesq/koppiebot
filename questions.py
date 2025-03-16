@@ -61,7 +61,7 @@ def create_context(question, df, max_len=1800):
   return "\n\n###\n\n".join(returns)
 
 def answer_question(df,
-                    model="gpt-3.5-turbo-1106",
+                    model="gpt-4o",
                     question="What is the meaning of life?",
                     max_len=1800,
                     debug=False,

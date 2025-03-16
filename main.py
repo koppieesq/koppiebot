@@ -1,5 +1,5 @@
 from typing import Union
-
+from chat import answer
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -17,4 +17,4 @@ async def read_item(item_id: int, q: Union[str, None] = None):
 
 @app.get("/chat/{query}")
 async def read_item(query: str):
-    return {"query": query}
+    return answer(query)
