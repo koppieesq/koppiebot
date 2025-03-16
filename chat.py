@@ -19,25 +19,6 @@ current_path = os.path.dirname(os.path.abspath(__file__))
 df = pd.read_csv(f"{current_path}/embeddings.csv", index_col=0)
 df['embeddings'] = df['embeddings'].apply(eval).apply(np.array)
 
-# Define Discord bot
-# intents = discord.Intents.default()
-# intents.message_content = True
-# discord_bot_token = os.environ['DISCORD_BOT_TOKEN']
-# bot = commands.Bot(command_prefix='/', intents=intents)
-#
-# @bot.command()
-# async def ping(ctx):
-#     await ctx.send('pong')
-#
-# @bot.command()
-# async def ask(ctx):
-#     # Strip command from question before passing it to AI
-#     question = ctx.message.content.replace('/ask ', '')
-#     answer = answer_question(df, question=question, debug=False)
-#     await ctx.send(answer)
-#
-# bot.run(discord_bot_token)
-
 # Answer the question, and return the answer.
 def answer(query):
     # Strip command from question before passing it to AI
