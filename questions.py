@@ -88,7 +88,7 @@ def answer_question(df,
             "role":
             "user",
             "content":
-            f"Answer the question based on the context below, and if the question can't be answered based on the context, say \"Jordan doesn't know,\" and then try to suggest a similar topic that is available in the context.  Try to cite sources to the links in the context when possible.\n\nContext: {context}\n\n---\n\nQuestion: {question}\nSource:\nAnswer:",
+            f"Answer the question based on the context below, and if the question can't be answered based on the context, then try to suggest a similar topic that is available in the context.  Try to cite sources to the links in the context when possible.\n\nContext: {context}\n\n---\n\nQuestion: {question}\nSource:\nAnswer:",
         }],
         temperature=0,
         max_tokens=max_tokens,
