@@ -10,3 +10,5 @@ python-dotenv
 typing
 fastapi
 uvicorn
+tiktoken
+langchain
