@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 openai = OpenAI(api_key=os.environ['OPENAI_API_KEY'])
+max_length = 5000
 
 def distances_from_embeddings(
   query_embedding: List[float],
@@ -29,7 +30,7 @@ def distances_from_embeddings(
   ]
   return distances
 
-def create_context(question, df, max_len=1800):
+def create_context(question, df, max_len=max_length):
   """
     Create a context for a question by finding the most similar context from the dataframe
     """
@@ -63,7 +64,7 @@ def create_context(question, df, max_len=1800):
 def answer_question(df,
                     model="gpt-4o",
                     question="What is the meaning of life?",
-                    max_len=1800,
+                    max_len=max_length,
                     debug=False,
                     max_tokens=150,
                     stop_sequence=None):
