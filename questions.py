@@ -66,7 +66,7 @@ def answer_question(df,
                     question="What is the meaning of life?",
                     max_len=max_length,
                     debug=False,
-                    max_tokens=150,
+                    max_tokens=1000,
                     stop_sequence=None):
   """
     Answer a question based on the most similar context from the dataframe texts
