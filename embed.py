@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 from time import time
 import requests
 from io import StringIO
+import sys
 
 # Start the timer
 start_time = time()
@@ -20,6 +21,12 @@ openai = OpenAI(api_key=os.environ['OPENAI_API_KEY'])
 # Load the cl100k_base tokenizer which is designed to work with the ada-002 model
 tokenizer = tiktoken.get_encoding("cl100k_base")
 
+# Accept a command line argument for the CSV file url.
+if len(sys.argv) > 1:
+    url = sys.argv[1]
+else:
+    # If no command line argument is provided, use the default URL.
+    url = 'https://d10.koplowiczandsons.com/export'
 
 # Download the CSV from URL
 def load_csv_from_url(url):
@@ -27,8 +34,7 @@ def load_csv_from_url(url):
     response.raise_for_status()  # Raise an exception for bad status codes
     return pd.read_csv(StringIO(response.text), index_col=0)
 
-print("Loading CSV from URL...")
-url = 'https://d10.koplowiczandsons.com/export'
+print("Loading CSV from " + url)
 df = load_csv_from_url(url)
 df.columns = ['title', 'body']
 
