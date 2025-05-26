@@ -2,6 +2,7 @@ from typing import Union
 from chat import answer
 from fastapi import FastAPI
 import uvicorn
+import ssl
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import PlainTextResponse
 

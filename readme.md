@@ -1,15 +1,45 @@
 # koppiebot
 
-It's armed with Koppie's knowledge, and absolutely nothing else.
+A headless, retrieval augmented generation chatbot.  Meant to operate alongside a headless blog, and provide context for the blog posts.
 
 ## Installation
 
-We're currently operating out of the `kands` branch:
-
 ```shell
-git pull origin kands
+git pull origin main
 pip install -r requirements.txt
 ```
+
+## Running as a Linux Service
+
+To run koppiebot as a systemd service on Linux:
+
+1. Create a systemd service file, e.g. `/etc/systemd/system/koppiebot.service`:
+
+```ini
+[Unit]
+Description=Koppiebot Service
+After=network.target
+
+[Service]
+Type=simple
+User=YOUR_USERNAME
+WorkingDirectory=/path/to/koppiebot
+ExecStart=/usr/bin/python3 /path/to/koppiebot/main.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+
+2. Reload systemd and enable the service:
+
+```shell
+sudo systemctl daemon-reload
+sudo systemctl enable koppiebot
+sudo systemctl start koppiebot
+```
+
+Replace `/path/to/koppiebot` and `YOUR_USERNAME` as appropriate for your setup.
 
 ## Updating
 
