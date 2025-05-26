@@ -34,12 +34,15 @@ async def query(query: str):
     return response
 
 if __name__ == "__main__":
+    # Pull ssl key and cert from .env.
+    keyfile = os.environ['KEY_FILE_PATH']
+    certfile = os.environ['CERT_FILE_PATH']
     uvicorn.run(
         "main:app",
         host="0.0.0.0",
         port=8000,
-        ssl_keyfile="key.pem",
-        ssl_certfile="cert.pem",
+        ssl_keyfile=keyfile,
+        ssl_certfile=certfile,
         ssl_version=ssl.PROTOCOL_TLS_SERVER,
         reload=True
     )

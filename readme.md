@@ -14,6 +14,8 @@ pip install -r requirements.txt
 You will need to set the following environment variables:
 
 - `OPENAI_API_KEY`: Your OpenAI API key.  Get one [here](https://platform.openai.com/account/api-keys)
+- `CERT_FILE_PATH`: The path to your SSL certificate file.  For example: `cert.pem`
+- `KEY_FILE_PATH`: The path to your SSL key file.  For example: `key.pem`
 - `ALLOW_ORIGINS`: A comma-separated list of origins that are allowed to access the API.  For example:
 
 ```shell
