@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from typing import Union
 from chat import answer
 from fastapi import FastAPI
