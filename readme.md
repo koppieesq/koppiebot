@@ -45,8 +45,10 @@ Replace `/path/to/koppiebot` and `YOUR_USERNAME` as appropriate for your setup.
 
 Koppiebot is not automatically updated; it relies on manual updates, thanks to the `embed.py` script.  This script will do a fresh import from the blog, and then process all blog posts into a vector database, which is stored in `embeddings.csv`.
 
+The script takes one argument, which is the URL of the CSV file to import.  If no argument is provided, the default URL is used.
+
 ```shell
-python embed.py
+python embed.py https://d10.koplowiczandsons.com/export
 systemctl restart koppiebot
 ```
 
