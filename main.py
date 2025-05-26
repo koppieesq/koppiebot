@@ -19,10 +19,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
-async def read_root():
-    return {"Hello": "World"}
-
 
 @app.get("/chat/{query}", response_class=PlainTextResponse)
 async def query(query: str):
