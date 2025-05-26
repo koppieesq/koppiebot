@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+
+import os
 from typing import Union
 from chat import answer
 from fastapi import FastAPI
@@ -8,13 +11,13 @@ from fastapi.responses import PlainTextResponse
 
 app = FastAPI()
 
+# Pull allow_origins from .env.
+allow_origins = os.environ['ALLOW_ORIGINS']
+
 # frontend URLs
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://kands10.ddev.site:3000",
-        "https://koplowiczandsons.com"
-    ],
+    allow_origins=allow_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

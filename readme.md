@@ -9,6 +9,17 @@ git pull origin main
 pip install -r requirements.txt
 ```
 
+### Environment Variables
+
+You will need to set the following environment variables:
+
+- `OPENAI_API_KEY`: Your OpenAI API key.  Get one [here](https://platform.openai.com/account/api-keys)
+- `ALLOW_ORIGINS`: A comma-separated list of origins that are allowed to access the API.  For example:
+
+```shell
+ALLOW_ORIGINS="['https://kands10.ddev.site:3000', 'https://koplowiczandsons.com']"
+```
+
 ## Running as a Linux Service
 
 To run koppiebot as a systemd service on Linux:
