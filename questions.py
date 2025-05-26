@@ -84,6 +84,11 @@ def answer_question(df,
     print("\n\n")
 
   try:
+    # Load prompt from prompt.txt
+    with open("prompt.txt", "r") as f:
+      prompt_template = f.read()
+    prompt = prompt_template.format(context=context, question=question)
+
     # Create a completions using the question and context
     response = openai.chat.completions.create(
         model=model,
@@ -91,7 +96,7 @@ def answer_question(df,
             "role":
             "user",
             "content":
-            f"Answer the question based on the context below, and if the question can't be answered based on the context, then try to suggest a similar topic that is available in the context.  Try to cite sources to the links in the context when possible.\n\nContext: {context}\n\n---\n\nQuestion: {question}\nSource:\nAnswer:",
+            prompt,
         }],
         temperature=0,
         max_tokens=max_tokens,
