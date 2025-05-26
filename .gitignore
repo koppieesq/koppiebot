@@ -2,3 +2,4 @@ __pycache__
 .env
 export.csv
 embeddings.csv
+*.pem

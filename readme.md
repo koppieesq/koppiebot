@@ -18,8 +18,26 @@ You will need to set the following environment variables:
 - `KEY_FILE_PATH`: The path to your SSL key file.  For example: `key.pem`
 - `ALLOW_ORIGINS`: A comma-separated list of origins that are allowed to access the API.  For example:
 
-```shell
+```dotenv
 ALLOW_ORIGINS="['https://kands10.ddev.site:3000', 'https://koplowiczandsons.com']"
+```
+
+## SSL Certificates
+
+You will need to generate SSL certificates for your koppiebot instance.  You can do this using [Let's Encrypt](https://letsencrypt.org/) or [Certbot](https://certbot.eff.org/).
+
+### Using Certbot
+
+```shell
+sudo certbot certonly --standalone -d yourdomain.com
+```
+
+### Local Development
+
+If you are running koppiebot locally, you will need to generate SSL certificates for your local machine.  You can do this using openSSL:
+
+```shell
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout key.pem -out cert.pem
 ```
 
 ## Running as a Linux Service
