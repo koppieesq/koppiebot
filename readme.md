@@ -22,6 +22,14 @@ You will need to set the following environment variables:
 ALLOW_ORIGINS="['https://kands10.ddev.site:3000', 'https://koplowiczandsons.com']"
 ```
 
+If you experience CORS issues, add the following environment variables:
+
+```dotenv
+NODE_TLS_REJECT_UNAUTHORIZED=0
+DANGEROUSLY_DISABLE_HOST_CHECK=true
+REACT_APP_IGNORE_SSL=true
+```
+
 ## SSL Certificates
 
 You will need to generate SSL certificates for your koppiebot instance.  You can do this using [Let's Encrypt](https://letsencrypt.org/) or [Certbot](https://certbot.eff.org/).
