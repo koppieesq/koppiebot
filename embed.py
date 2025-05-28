@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from time import time
 import requests
 from io import StringIO
-import sys
+import argparse
 
 # Start the timer
 start_time = time()
@@ -21,25 +21,39 @@ openai = OpenAI(api_key=os.environ['OPENAI_API_KEY'])
 # Load the cl100k_base tokenizer which is designed to work with the ada-002 model
 tokenizer = tiktoken.get_encoding("cl100k_base")
 
-# Accept a command line argument for the CSV file url.
-if len(sys.argv) > 1:
-    url = sys.argv[1]
-else:
-    # If no command line argument is provided, use the default URL.
-    url = 'https://d10.koplowiczandsons.com/export'
+# Parse command line arguments using argparse
+parser = argparse.ArgumentParser(description='Process and embed CSV data.')
+parser.add_argument('--url', type=str, default='https://d10.koplowiczandsons.com/export', help='URL of the CSV file to process')
+parser.add_argument('--unsafe', action='store_true', help='Disable SSL certificate verification (INSECURE)')
+parser.add_argument('--primary', type=str, default='body', help='Column to use as primary key (default: body)')
+args = parser.parse_args()
+
+url = args.url
+unsafe = args.unsafe
+primary = args.primary
 
 # Download the CSV from URL
-def load_csv_from_url(url):
-    response = requests.get(url)
-    response.raise_for_status()  # Raise an exception for bad status codes
-    return pd.read_csv(StringIO(response.text), index_col=0)
+def load_csv_from_url(url, unsafe):
+    if unsafe:
+        # Disable SSL certificate verification
+        print("Warning: SSL certificate verification is disabled.")
+        response = requests.get(url, verify=False)
+    else:
+        response = requests.get(url)
+    response.raise_for_status()
+    return pd.read_csv(StringIO(response.text))
 
 print("Loading CSV from " + url)
-df = load_csv_from_url(url)
-df.columns = ['title', 'body']
+df = load_csv_from_url(url, unsafe)
+
+print("CSV columns detected:", list(df.columns))
+
+# Use the primary column specified by the user (default 'body')
+if primary not in df.columns:
+    raise ValueError(f"Primary column '{primary}' not found in CSV columns: {list(df.columns)}")
 
 # Tokenize the text and save the number of tokens to a new column
-df['n_tokens'] = df.body.apply(lambda x: len(tokenizer.encode(x)))
+df['n_tokens'] = df[primary].apply(lambda x: len(tokenizer.encode(str(x))))
 
 chunk_size = 1000  # Max number of tokens
 
@@ -55,33 +69,27 @@ shortened = []
 
 print("Embedding text chunks...")
 for row in df.iterrows():
-
-  # If the text is None, go to the next row
-  if row[1]['body'] is None:
-    continue
-
-  # If the number of tokens is greater than the max number of tokens, split the text into chunks
-  if row[1]['n_tokens'] > chunk_size:
-    # Split the text using LangChain's text splitter
-    chunks = text_splitter.create_documents([row[1]['body']])
-    # Append the content of each chunk to the 'shortened' list
-    for chunk in chunks:
-      shortened.append(chunk.page_content)
-
-  # Otherwise, add the text to the list of shortened texts
-  else:
-    shortened.append(row[1]['body'])
+    # If the text is None, go to the next row
+    if pd.isna(row[1][primary]):
+        continue
+    # If the number of tokens is greater than the max number of tokens, split the text into chunks
+    if row[1]['n_tokens'] > chunk_size:
+        chunks = text_splitter.create_documents([row[1][primary]])
+        for chunk in chunks:
+            shortened.append(chunk.page_content)
+    else:
+        shortened.append(row[1][primary])
 
 print("Creating embeddings...")
-df = pd.DataFrame(shortened, columns=['body'])
-df['n_tokens'] = df.body.apply(lambda x: len(tokenizer.encode(x)))
+df_embed = pd.DataFrame(shortened, columns=[primary])
+df_embed['n_tokens'] = df_embed[primary].apply(lambda x: len(tokenizer.encode(str(x))))
 
 print("Sending embeddings for processing...")
-df['embeddings'] = df.body.apply(lambda x: openai.embeddings.create(
-    input=x, model='text-embedding-ada-002').data[0].embedding)
+df_embed['embeddings'] = df_embed[primary].apply(lambda x: openai.embeddings.create(
+    input=str(x), model='text-embedding-ada-002').data[0].embedding)
 
 print("Saving embeddings to CSV...")
-df.to_csv('embeddings.csv')
+df_embed.to_csv('embeddings.csv', index=False)
 
 end_time = time()
 print(f"Script completed in {end_time - start_time:.2f} seconds")

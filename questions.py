@@ -33,6 +33,14 @@ def distances_from_embeddings(
   return distances
 
 def create_context(question, df, max_len=max_length):
+  # Automatically detect the primary column
+  print(df.columns)
+  exclude_cols = {'embeddings', 'n_tokens', 'distances'}
+  text_cols = [col for col in df.columns if df[col].dtype == object and col not in exclude_cols]
+  if not text_cols:
+      raise ValueError("No suitable text column found in DataFrame!")
+  primary_col = text_cols[0]
+
   """
     Create a context for a question by finding the most similar context from the dataframe
     """
@@ -58,7 +66,8 @@ def create_context(question, df, max_len=max_length):
       break
 
     # Else add it to the text that is being returned
-    returns.append(row['body'])
+    print(row)
+    returns.append(row[primary_col])
 
   # Return the context
   return "\n\n###\n\n".join(returns)
