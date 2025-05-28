@@ -87,7 +87,7 @@ Koppiebot is not automatically updated; it relies on manual updates, thanks to t
 The script takes one argument, which is the URL of the CSV file to import.  If no argument is provided, the default URL is used.
 
 ```shell
-python embed.py https://d10.koplowiczandsons.com/export
+python embed.py --url https://d10.koplowiczandsons.com/export --primary body
 systemctl restart koppiebot
 ```
 
