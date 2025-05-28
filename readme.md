@@ -19,7 +19,7 @@ You will need to set the following environment variables:
 - `ALLOW_ORIGINS`: A comma-separated list of origins that are allowed to access the API.  For example:
 
 ```dotenv
-ALLOW_ORIGINS="['https://kands10.ddev.site:3000', 'https://koplowiczandsons.com']"
+ALLOW_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
 ```
 
 If you experience CORS issues, add the following environment variables:
