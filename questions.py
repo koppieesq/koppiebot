@@ -34,7 +34,6 @@ def distances_from_embeddings(
 
 def create_context(question, df, max_len=max_length):
   # Automatically detect the primary column
-  print(df.columns)
   exclude_cols = {'embeddings', 'n_tokens', 'distances'}
   text_cols = [col for col in df.columns if df[col].dtype == object and col not in exclude_cols]
   if not text_cols:
@@ -66,7 +65,6 @@ def create_context(question, df, max_len=max_length):
       break
 
     # Else add it to the text that is being returned
-    print(row)
     returns.append(row[primary_col])
 
   # Return the context
