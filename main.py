@@ -11,8 +11,8 @@ from fastapi.responses import PlainTextResponse
 
 app = FastAPI()
 
-# Pull allow_origins from .env.
-allow_origins = os.environ['ALLOW_ORIGINS']
+# Pull allow_origins from .env and split into a list.
+allow_origins = os.environ['ALLOW_ORIGINS'].split(",")
 
 # frontend URLs
 app.add_middleware(
