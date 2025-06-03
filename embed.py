@@ -52,6 +52,8 @@ print("CSV columns detected:", list(df.columns))
 if primary not in df.columns:
     raise ValueError(f"Primary column '{primary}' not found in CSV columns: {list(df.columns)}")
 
+print("Found primary column:", primary)
+
 # Tokenize the text and save the number of tokens to a new column
 df['n_tokens'] = df[primary].apply(lambda x: len(tokenizer.encode(str(x))))
 
