@@ -92,7 +92,7 @@ def answer_question(df,
 
   try:
     # Load prompt from prompt.txt
-    with open("prompt.txt", "r") as f:
+    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "prompt.txt"), "r") as f:
       prompt_template = f.read()
     prompt = prompt_template.format(context=context, question=question)
 

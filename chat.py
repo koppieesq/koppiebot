@@ -16,7 +16,9 @@ load_dotenv()
 current_path = os.path.dirname(os.path.abspath(__file__))
 
 # Load the blog knowledge
-df = pd.read_csv(f"{current_path}/embeddings.csv")
+# Where embeddings.csv lives: next to the code unless DATA_DIR says otherwise (e.g. a writable volume when the code is read-only).
+data_dir = os.environ.get('DATA_DIR', current_path)
+df = pd.read_csv(f"{data_dir}/embeddings.csv")
 df['embeddings'] = df['embeddings'].apply(eval).apply(np.array)
 
 # Answer the question, and return the answer.
