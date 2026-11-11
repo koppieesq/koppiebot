@@ -16,6 +16,7 @@ You will need to set the following environment variables:
 - `OPENAI_API_KEY`: Your OpenAI API key.  Get one [here](https://platform.openai.com/account/api-keys)
 - `CERT_FILE_PATH`: The path to your SSL certificate file.  For example: `cert.pem`
 - `KEY_FILE_PATH`: The path to your SSL key file.  For example: `key.pem`
+- `DATA_DIR` (optional): the directory `embeddings.csv` is written to by `embed.py` and read from by the server. Defaults to the code's own directory. Set it when the code is read-only, as in a container.
 - `ALLOW_ORIGINS`: A comma-separated list of origins that are allowed to access the API.  For example:
 
 ```dotenv
@@ -47,6 +48,10 @@ If you are running koppiebot locally, you will need to generate SSL certificates
 ```shell
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout key.pem -out cert.pem
 ```
+
+## Running under Prometheus
+
+[Prometheus](https://github.com/koppieesq/prometheus) can run koppiebot as a `--type python` site. Caddy terminates TLS there, so `CERT_FILE_PATH` and `KEY_FILE_PATH` are not needed, and the server is started with `uvicorn main:app --host 0.0.0.0 --port 8000`. Put `OPENAI_API_KEY`, `ALLOW_ORIGINS` and `DATA_DIR=/data` in the site's `app.env`. See Prometheus's `docs/python-apps.md`.
 
 ## Running as a Linux Service
 

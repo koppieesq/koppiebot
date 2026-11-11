@@ -90,8 +90,10 @@ print("Sending embeddings for processing...")
 df_embed['embeddings'] = df_embed[primary].apply(lambda x: openai.embeddings.create(
     input=str(x), model='text-embedding-ada-002').data[0].embedding)
 
-print("Saving embeddings to CSV...")
-df_embed.to_csv('embeddings.csv', index=False)
+# Written to DATA_DIR if set (chat.py reads it from there), else the current directory.
+out_path = os.path.join(os.environ.get('DATA_DIR', '.'), 'embeddings.csv')
+print(f"Saving embeddings to {out_path}...")
+df_embed.to_csv(out_path, index=False)
 
 end_time = time()
 print(f"Script completed in {end_time - start_time:.2f} seconds")
